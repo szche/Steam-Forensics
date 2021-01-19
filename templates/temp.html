@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+	.allUsers {
+		margin-top: 50px;
+		margin-bottom: 50px;
+	}
+
+	.avatar {
+		max-width: 64px;
+		height: auto;
+	}
+	.allUsers th {
+		padding: 10px;
+		width: 300px;
+		border-radius: 10px;
+		border: 20px solid white;
+		background-color: #1a1a1a;
+		color: white;
+	}
+	.allUsers th .username {
+		font-size: 30px;
+		margin: 0px;
+	}
+
+	.chatWho {
+		text-align: left;
+		font-size: 2em;
+		margin: 0px;
+		padding-bottom: 10px;
+		border-bottom: 3px solid white
+	}
+	.msgSent {
+		padding: 10px;
+		border-radius: 10px;
+		float: right;
+		background-color: blue;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	.msgRcv {
+		padding: 10px;
+		border-radius: 10px;
+		float: left;
+		background-color: green;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+
+	.msgsubinfo {
+		margin: 0px;
+		margin-top: 5px;
+		text-align: right;
+		font-size: 12px;
+		font-weight: bold;
+	}
+
+	.chats td {
+		width: 50%;
+		background-color: #1a1a1a;
+		color: white;
+		border: 20px solid white;
+		padding: 50px;
+		padding: 50px;
+	}
+
+
+
+</style>
+<title>Analiza Steam - Steamdatabase.db</title>
+</head>
+<body>
+	<table class="allUsers" style="width:100%">
+		  <tr>
+			{# Users #}
+			{% for user in users %}
+			<th>
+				<img src="{{users[user]['avatar']}}" class="avatar">
+				<p class="username">{{users[user]['nick']}}</p>
+				<p class="sid">{{user}} </p>
+			</th>
+				{% if loop.index%5 == 0 %}
+		  </tr>
+		  <tr>
+			{% endif %}
+			{% endfor %}
+		  </tr>
+	</table>
+
+
+	<table class='chats' style='width: 100%'>
+		<tr>
+			{# Chats between users #}
+			{% for chat in messages %}
+			<td style="vertical-align:top;">
+					<p class="chatWho">{{messages[chat][0]}}<p>
+				<div class="messages">
+					{% for msg in messages[chat][1::] %}
+						{% if msg['type'] == 'msgSent' %}
+								<span class="msgSent">
+										{{msg['text']}}	
+										<p class="msgsubinfo">{{msg['utcTime']}}</p>
+								</span>
+						{% else %}
+								<span class="msgRcv">
+										{{msg['text']}}	
+										<p class="msgsubinfo">{{msg['utcTime']}}</p>
+								</span>
+						{% endif %}
+						<div style="clear: both"></div>
+					{% endfor %}
+				</div>
+			</td>
+				{% if loop.index%2 == 0 %}
+				  </tr>
+				  <tr>
+				{% endif %}
+			{% endfor %}
+		</tr>
+	</table>
+	
+
+
+	
+</body>
+</html>
